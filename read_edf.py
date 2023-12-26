@@ -18,14 +18,15 @@ def read_edf_file(file_path):
     
 def plot_signals(signal_labels, signals, sample_frequency):
     num_channels = len(signal_labels)
-    fig, axes = plt.subplots(num_channels, 1, sharex=True, figsize=(10, 2 * num_channels))
+    fig, axes = plt.subplots(num_channels, 1, figsize=(10, 2 * num_channels))
     for i in range(num_channels):
         total_duration = len(signals[i]) / sample_frequency
         time_axis = np.linspace(0, total_duration, len(signals[i]))
-        print(time_axis.shape, signals[i].shape)
+        # print("#", total_duration)
         axes[i].plot(time_axis, signals[i], label=signal_labels[i])
         axes[i].set_ylabel("Amplitude")
         axes[i].legend()
-    axes[-1].set_xlabel("Time (seconds)")
-    plt.tight_layout()
+        axes[i].set_xlabel("Time (seconds)")
+        axes[i].set_xlim(0, total_duration)
+    plt.subplots_adjust(hspace=0.5)
     plt.show()

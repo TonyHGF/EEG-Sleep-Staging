@@ -29,10 +29,12 @@ def butter_bandpass_filter(sig, lowcut, highcut, Fs, order=7):
 def signal_filter(sig):
     return butter_bandpass_filter(sig, 0.5, 30, 100)
 
+down_sampling_rate = 10
+
 def down_sampling(sig):
     # print(len(sig))
     signal = []
-    for i in range(0, len(sig), 10):
+    for i in range(0, len(sig), down_sampling_rate):
         signal.append(sig[i])
     # print(signal)
     return signal

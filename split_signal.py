@@ -10,8 +10,11 @@ def split_edf_by_annotations(edf_file, start_times, durations, events):
 
         # results
         split_signals = []
-
-        for start_time, duration, event in tuple(start_times, durations, events):
+        len_result = len(start_times)
+        for i in range(len_result):
+            start_time = start_times[i]
+            duration = durations[i]
+            event = events[i]
             start_sample = int(start_time * edf.getSampleFrequency(0))
             end_sample = start_sample + int(duration * edf.getSampleFrequency(0))
 

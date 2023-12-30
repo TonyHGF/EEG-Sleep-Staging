@@ -20,7 +20,9 @@ def split_edf_by_annotations(edf_file, start_times, durations, events):
 
             
             event_signals = []
-            for signal in signals:
+            # for signal in signals:
+            for j in range(3):
+                signal = signals[j]
                 split_signal = signal[start_sample:end_sample]
                 event_signals.append(split_signal)
 
@@ -28,3 +30,14 @@ def split_edf_by_annotations(edf_file, start_times, durations, events):
 
         return split_signals
 
+def split_edf_by_30s(split_signals):
+    new_split_signals = []
+    for (event, event_signals) in split_signals:
+        duration = len(event_signals[0])
+        for start in range(0, 3000, duration):
+            if(start + 3000 >= duration):break
+            new_event_signals = []
+            for event_signal in event_signals:
+                new_event_signals.append(event_signal[start : start + 3000])
+            new_split_signals.append((event, new_event_signals))
+    return new_split_signals

@@ -29,13 +29,23 @@ def butter_bandpass_filter(sig, lowcut, highcut, Fs, order=7):
 def signal_filter(sig):
     return butter_bandpass_filter(sig, 0.5, 30, 100)
 
+def down_sampling(sig):
+    # print(len(sig))
+    signal = []
+    for i in range(0, len(sig), 10):
+        signal.append(sig[i])
+    # print(signal)
+    return signal
+
 def generate_matrix(split_signals):
     res = []
-    label = []
-    for i in range(len(split_signals)):
-        label.append(split_signals[i][0])
-        res.append(list2np(split_signals[i][1]))
+    labels = []
+    for (label, signals) in split_signals:
+        labels.append(label)
+        for i in range(len(signals)):
+            signals[i] = down_sampling(signals[i])
+        res.append(list2np(signals))
         
     X = np.vstack(res)
-    Y = np.vstack(label)
+    Y = np.vstack(labels)
     return X, Y

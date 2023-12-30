@@ -1,0 +1,3 @@
+1.read the edf files and get the data
+2.split the signals into 30s
+3.use signal_filter to get the useful part

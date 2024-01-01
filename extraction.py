@@ -141,7 +141,10 @@ def extract_single_file(edf_path, result_path):
     filename_without_extension = os.path.splitext(os.path.basename(edf_path))[0]
     file_name = filename_without_extension.split('-')[0]
     for label_name, sub_signal in tqdm(split_signals, desc=file_name):
-        Y_list.append(label_dir[label_name])
+        if label_name in label_dir:
+            Y_list.append(label_dir[label_name])
+        else:
+            continue
         vec_list = []
         for one_of_three in sub_signal:
            vec_list.append(signal_extraction(one_of_three)) 

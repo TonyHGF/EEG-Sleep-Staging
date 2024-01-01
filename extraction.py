@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import stats
-
+import os
 from frequency_domain_operation import *
 
 def calculate_zero_crossings(signal):
@@ -115,4 +115,40 @@ def signal_extraction(signal, cond = 1):
         li.append(value)
     
     return np.array(li)
-    
+
+from read_edf import *
+from read_result import *
+from split_signal import *
+from tqdm import tqdm
+import time
+
+label_dir = {
+    'Sleep stage W': 0,
+    'Sleep stage 1': 1,
+    'Sleep stage 2': 2,
+    'Sleep stage 3': 3,
+    'Sleep stage 4': 4,
+    'Sleep stage R': 5,
+    'Sleep stage ?': 6
+}
+
+def extract_single_file(edf_path, result_path):
+    start_times, durations, labels = read_result_file(result_path)
+    res = split_edf_by_annotations(edf_path, start_times, durations, labels)
+    split_signals = split_edf_by_30s(res)
+    X_list = []
+    Y_list = []
+    filename_without_extension = os.path.splitext(os.path.basename(edf_path))[0]
+    file_name = filename_without_extension.split('-')[0]
+    for label_name, sub_signal in tqdm(split_signals, desc=file_name):
+        Y_list.append(label_dir[label_name])
+        vec_list = []
+        for one_of_three in sub_signal:
+           vec_list.append(signal_extraction(one_of_three)) 
+        vec = np.concatenate(vec_list)
+        X_list.append(vec)
+    X = np.array(X_list)
+    Y = np.array(Y_list)
+    print("done:", file_name)
+    directory_path = 'result/'
+    np.savez(directory_path + file_name, features = X, labels = Y)

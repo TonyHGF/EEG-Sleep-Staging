@@ -33,7 +33,7 @@ def split_edf_by_30s(split_signals):
     new_split_signals = []
     for (event, event_signals) in split_signals:
         duration = len(event_signals[0])
-        for start in range(0, 3000, duration):
+        for start in range(0, duration, 3000):
             if(start + 3000 >= duration):break
             new_event_signals = []
             for event_signal in event_signals:

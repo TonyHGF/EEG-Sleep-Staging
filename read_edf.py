@@ -16,7 +16,7 @@ def read_edf_file(file_path):
         print(f"Error reading .edf file: {e}")
         return None
     
-def plot_signals(signal_labels, signals, sample_frequency):
+def plot_signals(signal_labels, signals, sample_frequency, save=False):
     num_channels = len(signal_labels)
     fig, axes = plt.subplots(num_channels, 1, figsize=(10, 2 * num_channels))
     for i in range(num_channels):
@@ -29,4 +29,6 @@ def plot_signals(signal_labels, signals, sample_frequency):
         axes[i].set_xlabel("Time (seconds)")
         axes[i].set_xlim(0, total_duration)
     plt.subplots_adjust(hspace=0.5)
+    if save:
+        plt.savefig('pre\plot.png')
     plt.show()

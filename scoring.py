@@ -15,16 +15,18 @@ def calculate_confmatrix(predict, real_label):
     cfm = np.zeros((6, 6), dtype=int)
     for i in range(n):
         cfm[real_label[i], predict[i]] += 1
+    return cfm
 
 def mf1_score(cfm):
     pre = 0
     rec = 0
     for i in range(6):
         TP = cfm[i,i]
-        FP = cfm[:,i] - TP
-        FN = cfm[i,:] - TP
+        FP = np.sum(cfm[:,i]) - TP
+        FN = np.sum(cfm[i,:]) - TP
         pre += TP / (TP + FP)
         rec += TP / (TP + FN)
+        print(i,TP,FP,FN,pre,rec)
     pre /= 6
     rec /= 6
     return 2 * pre * rec / (pre + rec)
@@ -34,9 +36,11 @@ def acc_score(cfm):
 
 def kappa_score(cfm):
     po = acc_score(cfm)
+    pe = 0
     for i in range(6):
         pe += np.dot(cfm[:,i], cfm[i,:])
     pe /= np.sum(cfm) ** 2
+    return (po - pe) / (1 - pe)
 
 def score(predict, real_label, method):
     """

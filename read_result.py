@@ -9,7 +9,7 @@ def read_result_file(file_path):
         annotations = reader.readAnnotations()
         return annotations[0], annotations[1], annotations[2]
     
-def plot_sleep_stages(start_times, durations, labels):
+def plot_sleep_stages(start_times, durations, labels, save=False):
     # 为每个睡眠阶段分配颜色
     color_dict = {
         'Sleep stage 1': 'blue',
@@ -43,4 +43,8 @@ def plot_sleep_stages(start_times, durations, labels):
     plt.xlabel('time')
     plt.title('Sleep Stages')
     plt.tight_layout()
+
+    if save:
+        plt.savefig('pre\sleep-stage-figure-in-database.png')
+
     plt.show()

@@ -14,7 +14,7 @@ def train_logistic_model(X, y):
     return model
 
 def train_logistic_model_with_cross_validation(X, y):
-    model = LogisticRegression(max_iter=1000, multi_class='ovr', solver='newton-cg')
+    model = LogisticRegression(max_iter=2000, multi_class='ovr', solver='newton-cg')
 
     # 10-fold cross-validation
     scores = cross_val_score(model, X, y, cv=10)

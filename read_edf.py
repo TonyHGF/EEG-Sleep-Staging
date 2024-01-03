@@ -32,3 +32,12 @@ def plot_signals(signal_labels, signals, sample_frequency, save=False):
     if save:
         plt.savefig('pre\plot.png')
     plt.show()
+
+def plot_by_nparray(array, title, save=False):
+    plt.figure(figsize=(6, 4))
+    plt.plot(array)
+    plt.title(title)
+    if save:
+        path = "pre\\" + title + ".png"
+        plt.savefig(path)
+    plt.show()

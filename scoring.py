@@ -14,7 +14,7 @@ def calculate_confmatrix(predict, real_label, catagories):
     n = len(predict)
     cfm = np.zeros((catagories, catagories), dtype=int)
     for i in range(n):
-        cfm[real_label[i], predict[i]] += 1
+        cfm[int(real_label[i]), int(predict[i])] += 1
     return cfm
 
 def mf1_score(cfm, catagories):
@@ -40,7 +40,7 @@ def acc_score(cfm, catagories):
     return np.sum(cfm * np.eye(catagories)) / np.sum(cfm)
 
 def kappa_score(cfm, catagories):
-    po = acc_score(cfm)
+    po = acc_score(cfm, catagories)
     pe = 0
     for i in range(catagories):
         pe += np.dot(cfm[:,i], cfm[i,:])
@@ -55,7 +55,7 @@ def score(predict, real_label, catagories=6):
         kappa : Cohen's kappa
     predict and real_label should both be 1-D numpy matrix with same length
     """
-    cfm = calculate_confmatrix(predict, real_label)
+    cfm = calculate_confmatrix(predict, real_label, catagories)
     print(f"mf1 score: {mf1_score(cfm, catagories):.3f}")
     print(f"acc_score: {acc_score(cfm, catagories):.3f}")
     print(f"kappa_score: {kappa_score(cfm, catagories):.3f}")

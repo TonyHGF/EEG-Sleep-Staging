@@ -30,7 +30,7 @@ def mf1_score(cfm):
         
         precision = TP / (TP + FP) if TP + FP != 0 else 0
         recall = TP / (TP + FN) if TP + FN != 0 else 0
-        print(f"Class {i}: Precision: {precision}, Recall: {recall}")
+        print(f"Class {i}: Precision: {precision:.3f}, Recall: {recall:.3f}")
     
     pre /= 7
     rec /= 7
@@ -56,6 +56,6 @@ def score(predict, real_label):
     predict and real_label should both be 1-D numpy matrix with same length
     """
     cfm = calculate_confmatrix(predict, real_label)
-    print("mf1 score:", mf1_score(cfm))
-    print("acc_score:", acc_score(cfm))
-    print("kappa_score:", kappa_score(cfm))
+    print(f"mf1 score: {mf1_score(cfm):.3f}")
+    print(f"acc_score: {acc_score(cfm):.3f}")
+    print(f"kappa_score: {kappa_score(cfm):.3f}")

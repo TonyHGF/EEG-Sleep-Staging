@@ -26,11 +26,11 @@ def mf1_score(cfm):
         FN = np.sum(cfm[i,:]) - TP
         pre += TP / (TP + FP)
         rec += TP / (TP + FN)
-        TN = np.sum(cfm) - (FP + FN + TP)
-        accuracy = (TP + TN) / np.sum(cfm)
+        # TN = np.sum(cfm) - (FP + FN + TP)
+        
         precision = TP / (TP + FP) if TP + FP != 0 else 0
         recall = TP / (TP + FN) if TP + FN != 0 else 0
-        print(f"Class {i}: Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}")
+        print(f"Class {i}: Precision: {precision}, Recall: {recall}")
     
     pre /= 7
     rec /= 7

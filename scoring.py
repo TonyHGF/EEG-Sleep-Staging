@@ -47,7 +47,7 @@ def kappa_score(cfm, catagories):
     pe /= np.sum(cfm) ** 2
     return (po - pe) / (1 - pe)
 
-def score(predict, real_label, catagories=6):
+def score(predict, real_label, catagories=7):
     """
     3 methods can be applied: 
         MF1 : Macro F1

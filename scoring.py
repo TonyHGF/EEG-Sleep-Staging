@@ -1,6 +1,6 @@
 import numpy as np
 
-def calculate_confmatrix(predict, real_label):
+def calculate_confmatrix(predict, real_label, catagories):
     """
     label list:
         'Sleep stage W': 0,
@@ -12,12 +12,12 @@ def calculate_confmatrix(predict, real_label):
         'Sleep stage ?': 6
     """
     n = len(predict)
-    cfm = np.zeros((7, 7), dtype=int)
+    cfm = np.zeros((catagories, catagories), dtype=int)
     for i in range(n):
         cfm[real_label[i], predict[i]] += 1
     return cfm
 
-def mf1_score(cfm):
+def mf1_score(cfm, catagories):
     pre = 0
     rec = 0
     for i in range(7):
@@ -32,22 +32,22 @@ def mf1_score(cfm):
         recall = TP / (TP + FN) if TP + FN != 0 else 0
         print(f"Class {i}: Precision: {precision:.3f}, Recall: {recall:.3f}")
     
-    pre /= 7
-    rec /= 7
+    pre /= catagories
+    rec /= catagories
     return 2 * pre * rec / (pre + rec)
 
-def acc_score(cfm):
-    return np.sum(cfm * np.eye(7)) / np.sum(cfm)
+def acc_score(cfm, catagories):
+    return np.sum(cfm * np.eye(catagories)) / np.sum(cfm)
 
-def kappa_score(cfm):
+def kappa_score(cfm, catagories):
     po = acc_score(cfm)
     pe = 0
-    for i in range(7):
+    for i in range(catagories):
         pe += np.dot(cfm[:,i], cfm[i,:])
     pe /= np.sum(cfm) ** 2
     return (po - pe) / (1 - pe)
 
-def score(predict, real_label):
+def score(predict, real_label, catagories=7):
     """
     3 methods can be applied: 
         MF1 : Macro F1
@@ -56,6 +56,6 @@ def score(predict, real_label):
     predict and real_label should both be 1-D numpy matrix with same length
     """
     cfm = calculate_confmatrix(predict, real_label)
-    print(f"mf1 score: {mf1_score(cfm):.3f}")
-    print(f"acc_score: {acc_score(cfm):.3f}")
-    print(f"kappa_score: {kappa_score(cfm):.3f}")
+    print(f"mf1 score: {mf1_score(cfm, catagories):.3f}")
+    print(f"acc_score: {acc_score(cfm, catagories):.3f}")
+    print(f"kappa_score: {kappa_score(cfm, catagories):.3f}")

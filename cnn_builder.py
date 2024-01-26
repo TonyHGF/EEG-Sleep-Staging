@@ -82,7 +82,7 @@ def train_cnn_model(X, y):
                              max_epochs=120,
                              batch_size=128,
                              callbacks=[skorch.callbacks.EarlyStopping(lower_is_better=True)])
-    
+    return model
     model.fit(train_data, np.asarray(train_label, dtype=np.int64))
     train_score = model.score(train_data, np.asarray(train_label, dtype=np.int64))
     print("training set score:",train_score)
@@ -93,11 +93,7 @@ def train_cnn_model(X, y):
     test_label = test_label.tolist()
     cnt = len(test_label)
     acc = np.zeros(7)
-    for i in range(cnt):
-        if test_label[i] == pred[i]:
-            acc[int(test_label[i])] += 1
-    for i in range(7):
-        print(f"Accuracy of class {i}: {acc[i]/test_label.count(i)}")
+
     
     test_score = model.score(test_data, np.asarray(test_label, dtype=np.int64))
     print("testing set score:",test_score)

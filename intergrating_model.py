@@ -9,6 +9,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 
+import cnn_builder
+
 def generate_model(X, y):
 
     scaler = preprocessing.StandardScaler().fit(X)
@@ -22,6 +24,8 @@ def generate_model(X, y):
     svm_classifier = LinearSVC(dual='auto', max_iter= 10000, tol=1e-3)
     logistic_classifier = LogisticRegression(max_iter=2000, multi_class='ovr', solver='newton-cg')
     bayes_classifier = GaussianNB()
+    cnn = cnn_builder.train_cnn_model(X_train, y_train)
+
     print("here")
     # 训练并测试SVM模型
     svm_classifier.fit(X_train, y_train)
@@ -38,6 +42,10 @@ def generate_model(X, y):
     bayes_pred = bayes_classifier.predict(X_test)
     bayes_accuracy = accuracy_score(y_test, bayes_pred)
     
+    cnn.fit(X_train, np.asarray(y_train, dtype=np.int64))
+    cnn_pred = cnn.predict(X_test)
+    cnn_accuracy = accuracy_score(y_test, cnn_pred)
+
     # 找出准确率最高的模型
     best_model = None
     best_accuracy = 0.0
@@ -50,12 +58,15 @@ def generate_model(X, y):
     if bayes_accuracy > best_accuracy:
         best_accuracy = bayes_accuracy
         best_model = bayes_classifier
-    
+    if cnn_accuracy > best_accuracy:
+        best_accuracy = cnn_accuracy
+        best_model = cnn
+
     # 输出准确率并返回最佳模型
-    print("SVM准确率:", svm_accuracy)
-    print("Logistic回归准确率:", logistic_accuracy)
-    print("贝叶斯分类器准确率:", bayes_accuracy)
-    
+    print("SVM:", svm_accuracy)
+    print("Logistic:", logistic_accuracy)
+    print("Naive Bayes:", bayes_accuracy)
+    print("CNN:", cnn_accuracy)
     return best_model    
 
 

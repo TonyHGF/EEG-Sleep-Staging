@@ -4,7 +4,7 @@ import numpy as np
 from sklearn import preprocessing
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
@@ -19,10 +19,10 @@ def generate_model(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     # 初始化三种分类器
-    svm_classifier = SVC(kernel='linear')
-    logistic_classifier = LogisticRegression()
+    svm_classifier = LinearSVC(dual='auto', max_iter= 10000, tol=1e-3)
+    logistic_classifier = LogisticRegression(max_iter=2000, multi_class='ovr', solver='newton-cg')
     bayes_classifier = GaussianNB()
-    
+    print("here")
     # 训练并测试SVM模型
     svm_classifier.fit(X_train, y_train)
     svm_pred = svm_classifier.predict(X_test)

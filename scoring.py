@@ -55,7 +55,7 @@ def score(predict, real_label, catagories=7):
         kappa : Cohen's kappa
     predict and real_label should both be 1-D numpy matrix with same length
     """
-    cfm = calculate_confmatrix(predict, real_label)
+    cfm = calculate_confmatrix(predict, real_label, catagories)
     print(f"mf1 score: {mf1_score(cfm, catagories):.3f}")
     print(f"acc_score: {acc_score(cfm, catagories):.3f}")
     print(f"kappa_score: {kappa_score(cfm, catagories):.3f}")

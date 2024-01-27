@@ -19,7 +19,7 @@ class CustomLoss(nn.Module):
 
     def forward(self, outputs, targets):
         # 自定义损失计算
-        return nn.functional.binary_cross_entropy_with_logits(outputs, targets, pos_weight=self.pos_weight)
+        return F.binary_cross_entropy_with_logits(outputs, targets, pos_weight=self.pos_weight)
 
 # Function to train logistic regression model in PyTorch
 def train_logistic_model_pytorch(X, y, pos_weight, learning_rate=0.01, epochs=2000):

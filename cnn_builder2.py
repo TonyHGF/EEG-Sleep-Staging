@@ -99,7 +99,7 @@ class CNN_Sleeping(nn.Module):
 
 def train_cnn_model(X, y):
     learning_rate = 1e-2
-    channel = 32
+    channel = 128
     print(f"Start with learning rate: {learning_rate} and channel: {channel}")
     train_data,test_data,train_label,test_label = train_test_split(X,y,random_state=1,train_size=0.7,test_size=0.3)
     train_data = torch.Tensor(train_data)

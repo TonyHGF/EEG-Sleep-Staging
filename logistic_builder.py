@@ -21,3 +21,4 @@ def train_logistic_model_with_cross_validation(X, y):
 
     print("Cross-Validation scores:", scores)
     print("Mean score:", np.mean(scores))
+    return model

@@ -9,3 +9,4 @@ def train_svm_model(X, y):
     print("training set score:",train_score)
     test_score = model.score(test_data,test_label)
     print("testing set score:",test_score)
+    return model

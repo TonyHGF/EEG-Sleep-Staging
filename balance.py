@@ -1,6 +1,8 @@
 import itertools
 import numpy as np
 
+from sklearn.cluster import KMeans
+
 def get_balance_class_downsample(x, y):
     """
     Balance the number of samples of all classes by (downsampling):
@@ -62,3 +64,36 @@ def get_balance_class_oversample(x, y):
     balance_y = np.hstack(balance_y)
 
     return balance_x, balance_y
+
+def generate_prototypes(X, y):
+    """
+    使用K-means算法进行原型生成，聚类数量与少数类样本数量相匹配。
+    
+    参数:
+    X -- 原始数据集的特征矩阵。
+    y -- 数据集的标签向量。
+    
+    返回:
+    X_new -- 经过原型生成处理后的新特征矩阵。
+    y_new -- 新特征矩阵对应的标签向量。
+    """
+    y = y.astype(int)
+    # 分离多数类和少数类
+    majority_class = np.argmax(np.bincount(y))
+    minority_class = 1 - majority_class
+
+    X_majority = X[y == majority_class]
+    X_minority = X[y == minority_class]
+
+    # 确定聚类数量为少数类样本的数量
+    n_clusters = len(X_minority)
+
+    # 对多数类应用K-means
+    kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(X_majority)
+    prototypes = kmeans.cluster_centers_
+
+    # 创建新的数据集
+    X_new = np.vstack((prototypes, X_minority))
+    y_new = np.array([majority_class] * n_clusters + [minority_class] * n_clusters)
+
+    return X_new, y_new

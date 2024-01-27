@@ -20,7 +20,7 @@ def calculate_confmatrix(predict, real_label, catagories):
 def mf1_score(cfm, catagories):
     pre = 0
     rec = 0
-    for i in range(7):
+    for i in range(catagories):
         TP = cfm[i,i]
         FP = np.sum(cfm[:,i]) - TP
         FN = np.sum(cfm[i,:]) - TP

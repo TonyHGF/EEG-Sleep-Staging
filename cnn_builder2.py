@@ -138,3 +138,5 @@ def train_cnn_model(X, y):
     
     test_score = model.score(test_data, np.asarray(test_label, dtype=np.int64))
     print("testing set score:",test_score)
+    
+    return pred, test_label
